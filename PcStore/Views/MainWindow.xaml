@@ -1,0 +1,59 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:PcStore"
+    xmlns:converters="clr-namespace:PcStore.Converters"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="av" 
+    x:Class="PcStore.MainWindow"
+    Title="PC Store" Height="450" Width="900">
+    <Window.Resources>
+        <converters:TypeToStringConverter x:Key="TypeToStringConverter" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- First row -->
+        <TextBlock Grid.Column="0" Text="Component Type:"/>
+        <ComboBox Grid.Column="1" x:Name="componentTypeComboBox"
+                  ItemsSource="{Binding ComponentTypes}"
+                  SelectedItem="{Binding SelectedComponentType}" />
+
+        <TextBlock Grid.Column="2" Text="Filter:"/>
+        <TextBox Grid.Column="3" x:Name="filterTextBox" Text="{Binding CurrentFilter}"/>
+
+        <!-- Second row -->
+        <ListBox Grid.Row="1" Grid.Column="3" 
+                 ItemsSource="{Binding FilterOptions}" 
+                 SelectedItem="{Binding SelectedFilterOption}" Margin="103,11,150,0"/>
+        <DataGrid x:Name="resultsDataGrid" Grid.Row="1" Grid.ColumnSpan="4" AutoGenerateColumns="True" ItemsSource="{Binding Results}" Margin="0,11,291,0"/>
+
+        <!-- Search button -->
+        <Button Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Content="Search" Command="{Binding SearchCommand}" Width="100"/>
+        <Button Grid.Column="3" Content="Clear Filters" Command="{Binding ClearFiltersCommand}" HorizontalAlignment="Left" Margin="289,40,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
+        <Button Grid.Column="3" Content="Add Filter" Command="{Binding AddFilterCommand}" HorizontalAlignment="Left" Margin="289,20,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
+        <ListBox Grid.Column="3" Grid.Row="1" Margin="260,73,0,0" ItemsSource="{Binding Filters}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Key}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Value}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
